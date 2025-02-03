@@ -3,9 +3,37 @@
 import React from "react";
 import { Formik, Field, Form, FieldArray, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import Select from "react-select";
 
-// Define the validation schema using Yup
+// Масив з варіантами поштових адрес
+const senderOptions = [
+  { value: "noreply@quorixia.com", label: "noreply@quorixia.com" },
+  {
+    value: "noreply@upgear.digital",
+    label: "noreply@upgear.digital",
+  },
+];
+
+// Компонент для інтеграції react-select з Formik
+const ReactSelectField = ({ field, form, options, ...props }) => {
+  // Знаходимо опцію, яка відповідає поточному значенню
+  const selectedOption =
+    options.find((option) => option.value === field.value) || null;
+  return (
+    <Select
+      {...props}
+      value={selectedOption}
+      onChange={(option) => form.setFieldValue(field.name, option.value)}
+      options={options}
+    />
+  );
+};
+
+// Схема валідації за допомогою Yup
 const EmailSchema = Yup.object().shape({
+  sender: Yup.string()
+    .email("Invalid email address")
+    .required("Sender email is required"),
   email: Yup.string()
     .email("Invalid email address")
     .required("Primary email is required"),
@@ -16,27 +44,29 @@ const EmailSchema = Yup.object().shape({
 });
 
 export default function Home() {
-  // Initial form values
+  // Початкові значення форми
   const initialValues = {
+    sender: "", // адреса за замовчуванням
     email: "",
     bcc: [""],
   };
 
-  // Handle form submission
-  const handleSubmit = async (values, { setSubmitting, resetForm, setStatus }) => {
+  // Обробник відправки форми
+  const handleSubmit = async (
+    values,
+    { setSubmitting, resetForm, setStatus }
+  ) => {
     try {
-      // Prepare the payload
       const payload = {
+        sender: values.sender,
         email: values.email,
-        bcc: values.bcc.filter((bcc) => bcc.trim() !== ""), // Remove empty strings
+        bcc: values.bcc.filter((bcc) => bcc.trim() !== ""), // Видаляємо порожні значення
       };
 
-      // Send POST request to the backend API route
-      const response = await fetch("/api/send-email", { // Adjust the API route as needed
+      // Відправка POST-запиту до API (наприклад, /api/send-email)
+      const response = await fetch("/api/send-email", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
@@ -65,7 +95,28 @@ export default function Home() {
       >
         {({ values, isSubmitting, status }) => (
           <Form>
-            {/* Primary Email Field */}
+            {/* Поле для вибору адреси відправника із react-select */}
+            <div className="mb-4">
+              <label
+                htmlFor="sender"
+                className="block text-sm font-medium mb-1"
+              >
+                Sender Email
+              </label>
+              <Field
+                name="sender"
+                component={ReactSelectField}
+                options={senderOptions}
+                placeholder="Select sender email"
+              />
+              <ErrorMessage
+                name="sender"
+                component="div"
+                className="text-red-500 text-sm mt-1"
+              />
+            </div>
+
+            {/* Поле для основного отримувача */}
             <div className="mb-4">
               <label htmlFor="email" className="block text-sm font-medium mb-1">
                 Primary Email
@@ -84,9 +135,11 @@ export default function Home() {
               />
             </div>
 
-            {/* BCC Emails Field Array */}
+            {/* Поле для BCC-пошти (масив адрес) */}
             <div className="mb-4">
-              <label className="block text-sm font-medium mb-1">BCC Emails</label>
+              <label className="block text-sm font-medium mb-1">
+                BCC Emails
+              </label>
               <FieldArray name="bcc">
                 {({ push, remove }) => (
                   <div>
@@ -120,7 +173,7 @@ export default function Home() {
               </FieldArray>
             </div>
 
-            {/* Submission Status */}
+            {/* Вивід статусу відправки */}
             {status && status.success && (
               <div className="mb-4 text-green-500">{status.success}</div>
             )}
@@ -128,7 +181,7 @@ export default function Home() {
               <div className="mb-4 text-red-500">{status.error}</div>
             )}
 
-            {/* Submit Button */}
+            {/* Кнопка відправки */}
             <button
               type="submit"
               disabled={isSubmitting}

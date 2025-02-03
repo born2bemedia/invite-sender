@@ -1,27 +1,21 @@
-// File: app/api/send-email/route.js
-
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
-import { google } from "googleapis";
+import sgMail from "@sendgrid/mail";
 
-// Destructure OAuth2 from googleapis
-const { OAuth2 } = google.auth;
-
-
-const {
-  EMAIL_CLIENT_ID,
-  EMAIL_CLIENT_SECRET,
-  EMAIL_REFRESH_TOKEN,
-  EMAIL_REDIRECT_URI,
-  EMAIL_USER,
-} = process.env;
+// Встановлюємо API-ключ SendGrid з змінної середовища
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 export async function POST(request) {
   try {
-    // Parse the JSON body of the request
-    const { email, bcc } = await request.json();
+    // Розпарсити тіло запиту
+    const { sender, email, bcc } = await request.json();
 
-    // Validate input
+    // Валідація вхідних даних
+    if (!sender) {
+      return NextResponse.json(
+        { message: "Sender email is required." },
+        { status: 400 }
+      );
+    }
     if (!email) {
       return NextResponse.json(
         { message: "Recipient email is required." },
@@ -29,58 +23,23 @@ export async function POST(request) {
       );
     }
 
-    // Initialize OAuth2 Client
-    const oauth2Client = new OAuth2(
-      EMAIL_CLIENT_ID,
-      EMAIL_CLIENT_SECRET,
-      EMAIL_REDIRECT_URI
-    );
-
-    // Set the refresh token
-    oauth2Client.setCredentials({
-      refresh_token: EMAIL_REFRESH_TOKEN,
-    });
-
-    // Get access token
-    const accessTokenResponse = await oauth2Client.getAccessToken();
-    const accessToken = accessTokenResponse?.token;
-
-    if (!accessToken) {
-      throw new Error("Failed to obtain access token.");
-    }
-
-    // Create Nodemailer transporter using OAuth2
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        type: "OAuth2",
-        user: EMAIL_USER,
-        clientId: EMAIL_CLIENT_ID,
-        clientSecret: EMAIL_CLIENT_SECRET,
-        refreshToken: EMAIL_REFRESH_TOKEN,
-        accessToken: accessToken,
-      },
-      tls: {
-        rejectUnauthorized: false, // Use with caution. Consider setting to true in production.
-      },
-    });
-
-
-    // Set up email data with BCC
-    const mailOptions = {
-      from: `"Invitation" <${EMAIL_USER}>`, // Sender address
-      to: email, // Primary recipient
-      bcc: bcc, // BCC recipients
+    // Створення об'єкта повідомлення для SendGrid
+    const msg = {
+      to: email, // Основний отримувач
+      from: sender, // Адреса відправника (ця адреса має бути верифікована у SendGrid)
       subject: "Invite",
-      text: "Invite Sent",
+      html: "<p>Invite Sent test</p>",
     };
 
-    // Send email
-    await transporter.sendMail(mailOptions);
+    // Якщо передано BCC, додаємо їх (переконайтеся, що це масив)
+    if (bcc && Array.isArray(bcc) && bcc.length > 0) {
+      msg.bcc = bcc;
+    }
 
-    console.log("Email sent successfully to:", email);
+    // Відправка листа через SendGrid
+    await sgMail.send(msg);
 
-
+    console.log("Email sent successfully from:", sender, "to:", email);
     return NextResponse.json({ message: "Success: email was sent." });
   } catch (error) {
     console.error("Error sending email:", error);
