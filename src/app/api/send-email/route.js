@@ -28,7 +28,7 @@ export async function POST(request) {
       to: email, // Основний отримувач
       from: sender, // Адреса відправника (ця адреса має бути верифікована у SendGrid)
       subject: "Invite",
-      html: "<p>Invite Sent test</p>",
+      html: "<p>Invite Sent</p>",
     };
 
     // Якщо передано BCC, додаємо їх (переконайтеся, що це масив)

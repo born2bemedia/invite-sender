@@ -12,6 +12,10 @@ const senderOptions = [
     value: "noreply@upgear.digital",
     label: "noreply@upgear.digital",
   },
+  {
+    value: "invitesender86@gmail.com",
+    label: "invitesender86@gmail.com",
+  },
 ];
 
 // Компонент для інтеграції react-select з Formik
@@ -63,8 +67,13 @@ export default function Home() {
         bcc: values.bcc.filter((bcc) => bcc.trim() !== ""), // Видаляємо порожні значення
       };
 
-      // Відправка POST-запиту до API (наприклад, /api/send-email)
-      const response = await fetch("/api/send-email", {
+      let apiAddress = "/api/send-email";
+
+      if (values.sender == "invitesender86@gmail.com") {
+        apiAddress = "/api/send";
+      }
+
+      const response = await fetch(apiAddress, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
