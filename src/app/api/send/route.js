@@ -1,10 +1,7 @@
-// File: app/api/send-email/route.js
-
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { google } from "googleapis";
 
-// Destructure OAuth2 from googleapis
 const { OAuth2 } = google.auth;
 
 const {
@@ -17,10 +14,8 @@ const {
 
 export async function POST(request) {
   try {
-    // Parse the JSON body of the request
     const { email, bcc } = await request.json();
 
-    // Validate input
     if (!email) {
       return NextResponse.json(
         { message: "Recipient email is required." },
@@ -28,19 +23,16 @@ export async function POST(request) {
       );
     }
 
-    // Initialize OAuth2 Client
     const oauth2Client = new OAuth2(
       EMAIL_CLIENT_ID,
       EMAIL_CLIENT_SECRET,
       EMAIL_REDIRECT_URI
     );
 
-    // Set the refresh token
     oauth2Client.setCredentials({
       refresh_token: EMAIL_REFRESH_TOKEN,
     });
 
-    // Get access token
     const accessTokenResponse = await oauth2Client.getAccessToken();
     const accessToken = accessTokenResponse?.token;
 
@@ -48,7 +40,6 @@ export async function POST(request) {
       throw new Error("Failed to obtain access token.");
     }
 
-    // Create Nodemailer transporter using OAuth2
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -60,20 +51,18 @@ export async function POST(request) {
         accessToken: accessToken,
       },
       tls: {
-        rejectUnauthorized: false, // Use with caution. Consider setting to true in production.
+        rejectUnauthorized: false, 
       },
     });
 
-    // Set up email data with BCC
     const mailOptions = {
-      from: `"Invitation" <${EMAIL_USER}>`, // Sender address
-      to: email, // Primary recipient
-      bcc: bcc, // BCC recipients
+      from: `"Invitation" <${EMAIL_USER}>`, 
+      to: email, 
+      bcc: bcc, 
       subject: "Invite",
       text: "Invite Sent",
     };
 
-    // Send email
     await transporter.sendMail(mailOptions);
 
     console.log("Email sent successfully to:", email);

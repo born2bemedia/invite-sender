@@ -5,22 +5,67 @@ import { Formik, Field, Form, FieldArray, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Select from "react-select";
 
-// Масив з варіантами поштових адрес
 const senderOptions = [
-  { value: "noreply@quorixia.com", label: "noreply@quorixia.com" },
+  {
+    value: "invitesender86@gmail.com",
+    label: "invitesender86@gmail.com",
+  },
   {
     value: "noreply@upgear.digital",
     label: "noreply@upgear.digital",
   },
   {
-    value: "invitesender86@gmail.com",
-    label: "invitesender86@gmail.com",
+    value: "noreply@cryptola.digital",
+    label: "noreply@cryptola.digital",
+  },
+  {
+    value: "noreply@sparkspheretech.net",
+    label: "noreply@sparkspheretech.net",
+  },
+  {
+    value: "noreply@modellistdigital.com",
+    label: "noreply@modellistdigital.com",
+  },
+  {
+    value: "noreply@geselar.com",
+    label: "noreply@geselar.com",
+  },
+  {
+    value: "noreply@bevacationtravels.com",
+    label: "noreply@bevacationtravels.com",
+  },
+  {
+    value: "noreply@dapply.agency",
+    label: "noreply@dapply.agency",
+  },
+  {
+    value: "noreply@3design-lab.com",
+    label: "noreply@3design-lab.com",
+  },
+  {
+    value: "noreply@statisfactory.io",
+    label: "noreply@statisfactory.io",
+  },
+  {
+    value: "noreply@craftcodemaster.com",
+    label: "noreply@craftcodemaster.com",
+  },
+  {
+    value: "noreply@praxon.io",
+    label: "noreply@praxon.io",
+  },
+  {
+    value: "noreply@medisparkweb.com",
+    label: "noreply@medisparkweb.com",
+  },
+  {
+    value: "noreply@quorixia.com",
+    label: "noreply@quorixia.com",
   },
 ];
 
-// Компонент для інтеграції react-select з Formik
 const ReactSelectField = ({ field, form, options, ...props }) => {
-  // Знаходимо опцію, яка відповідає поточному значенню
+  
   const selectedOption =
     options.find((option) => option.value === field.value) || null;
   return (
@@ -33,7 +78,6 @@ const ReactSelectField = ({ field, form, options, ...props }) => {
   );
 };
 
-// Схема валідації за допомогою Yup
 const EmailSchema = Yup.object().shape({
   sender: Yup.string()
     .email("Invalid email address")
@@ -48,14 +92,13 @@ const EmailSchema = Yup.object().shape({
 });
 
 export default function Home() {
-  // Початкові значення форми
+
   const initialValues = {
-    sender: "", // адреса за замовчуванням
+    sender: "", 
     email: "",
     bcc: [""],
   };
 
-  // Обробник відправки форми
   const handleSubmit = async (
     values,
     { setSubmitting, resetForm, setStatus }
@@ -64,7 +107,7 @@ export default function Home() {
       const payload = {
         sender: values.sender,
         email: values.email,
-        bcc: values.bcc.filter((bcc) => bcc.trim() !== ""), // Видаляємо порожні значення
+        bcc: values.bcc.filter((bcc) => bcc.trim() !== ""), 
       };
 
       let apiAddress = "/api/send-email";
@@ -104,7 +147,6 @@ export default function Home() {
       >
         {({ values, isSubmitting, status }) => (
           <Form>
-            {/* Поле для вибору адреси відправника із react-select */}
             <div className="mb-4">
               <label
                 htmlFor="sender"
@@ -125,7 +167,6 @@ export default function Home() {
               />
             </div>
 
-            {/* Поле для основного отримувача */}
             <div className="mb-4">
               <label htmlFor="email" className="block text-sm font-medium mb-1">
                 Primary Email
@@ -144,7 +185,6 @@ export default function Home() {
               />
             </div>
 
-            {/* Поле для BCC-пошти (масив адрес) */}
             <div className="mb-4">
               <label className="block text-sm font-medium mb-1">
                 BCC Emails
@@ -182,7 +222,6 @@ export default function Home() {
               </FieldArray>
             </div>
 
-            {/* Вивід статусу відправки */}
             {status && status.success && (
               <div className="mb-4 text-green-500">{status.success}</div>
             )}
@@ -190,7 +229,6 @@ export default function Home() {
               <div className="mb-4 text-red-500">{status.error}</div>
             )}
 
-            {/* Кнопка відправки */}
             <button
               type="submit"
               disabled={isSubmitting}
