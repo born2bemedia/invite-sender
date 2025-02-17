@@ -4,68 +4,9 @@ import React from "react";
 import { Formik, Field, Form, FieldArray, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Select from "react-select";
-
-const senderOptions = [
-  {
-    value: "invitesender86@gmail.com",
-    label: "invitesender86@gmail.com",
-  },
-  {
-    value: "noreply@upgear.digital",
-    label: "noreply@upgear.digital",
-  },
-  {
-    value: "noreply@cryptola.digital",
-    label: "noreply@cryptola.digital",
-  },
-  {
-    value: "noreply@sparkspheretech.net",
-    label: "noreply@sparkspheretech.net",
-  },
-  {
-    value: "noreply@modellistdigital.com",
-    label: "noreply@modellistdigital.com",
-  },
-  {
-    value: "noreply@geselar.com",
-    label: "noreply@geselar.com",
-  },
-  {
-    value: "noreply@bevacationtravels.com",
-    label: "noreply@bevacationtravels.com",
-  },
-  {
-    value: "noreply@dapply.agency",
-    label: "noreply@dapply.agency",
-  },
-  {
-    value: "noreply@3design-lab.com",
-    label: "noreply@3design-lab.com",
-  },
-  {
-    value: "noreply@statisfactory.io",
-    label: "noreply@statisfactory.io",
-  },
-  {
-    value: "noreply@craftcodemaster.com",
-    label: "noreply@craftcodemaster.com",
-  },
-  {
-    value: "noreply@praxon.io",
-    label: "noreply@praxon.io",
-  },
-  {
-    value: "noreply@medisparkweb.com",
-    label: "noreply@medisparkweb.com",
-  },
-  {
-    value: "noreply@quorixia.com",
-    label: "noreply@quorixia.com",
-  },
-];
+import { senderOptions } from "./senderOptions";
 
 const ReactSelectField = ({ field, form, options, ...props }) => {
-  
   const selectedOption =
     options.find((option) => option.value === field.value) || null;
   return (
@@ -92,9 +33,8 @@ const EmailSchema = Yup.object().shape({
 });
 
 export default function Home() {
-
   const initialValues = {
-    sender: "", 
+    sender: "",
     email: "",
     bcc: [""],
   };
@@ -107,7 +47,7 @@ export default function Home() {
       const payload = {
         sender: values.sender,
         email: values.email,
-        bcc: values.bcc.filter((bcc) => bcc.trim() !== ""), 
+        bcc: values.bcc.filter((bcc) => bcc.trim() !== ""),
       };
 
       let apiAddress = "/api/send-email";
