@@ -34,4 +34,24 @@ export const senderOptions = [
     label: "servicequality@medisparkweb.com",
   },
   { value: "helpcenter@quorixia.com", label: "helpcenter@quorixia.com" },
+  { value: "interaction@holaxgroup.com", label: "interaction@holaxgroup.com" },
+  {
+    value: "qualitycontrol@gllintor.com",
+    label: "qualitycontrol@gllintor.com",
+  },
+  { value: "userfeedback@employax.com", label: "userfeedback@employax.com" },
+  { value: "clientcare@lyxiom.com", label: "clientcare@lyxiom.com" },
+  {
+    value: "advancement@adfluentica.com",
+    label: "advancement@adfluentica.com",
+  },
+  {
+    value: "feedbackcenter@brandedify.com",
+    label: "feedbackcenter@brandedify.com",
+  },
+  {
+    value: "socialreputation@bizorax.com",
+    label: "socialreputation@bizorax.com",
+  },
+  { value: "usercare@velloxia.com", label: "usercare@velloxia.com" },
 ];
