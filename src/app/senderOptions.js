@@ -39,6 +39,10 @@ export const senderOptions = [
     value: "qualitycontrol@gllintor.com",
     label: "qualitycontrol@gllintor.com",
   },
+  {
+    value: "control@excellanta.com",
+    label: "control@excellanta.com",
+  }
   { value: "userfeedback@employax.com", label: "userfeedback@employax.com" },
   { value: "clientcare@lyxiom.com", label: "clientcare@lyxiom.com" },
   {
