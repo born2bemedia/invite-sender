@@ -59,4 +59,6 @@ export const senderOptions = [
   },
   { value: "usercare@velloxia.com", label: "usercare@velloxia.com" },
   { value: "socials@state-aware.com", label: "socials@state-aware.com" },
+  { value: "socials@moduplans.com", label: "socials@moduplans.com" },
+  { value: "socials@marketifire.com", label: "socials@marketifire.com" },
 ];
