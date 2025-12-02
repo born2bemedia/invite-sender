@@ -61,5 +61,5 @@ export const senderOptions = [
   { value: "socials@state-aware.com", label: "socials@state-aware.com" },
   { value: "socials@moduplans.com", label: "socials@moduplans.com" },
   { value: "socials@marketifire.com", label: "socials@marketifire.com" },
-  { value: "socials@marketeloro.com", label: "socials@marketeloro.com" },
+  { value: "socials@signalor.pro", label: "socials@signalor.pro" },
 ];
