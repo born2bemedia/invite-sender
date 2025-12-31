@@ -62,5 +62,6 @@ export const senderOptions = [
   { value: "socials@moduplans.com", label: "socials@moduplans.com" },
   { value: "socials@marketifire.com", label: "socials@marketifire.com" },
   { value: "socials@signalor.pro", label: "socials@signalor.pro" },
+  { value: "socials@green-leaf.dev", label: "socials@green-leaf.dev" },
   { value: "socials@craftify-tech.com", label: "socials@craftify-tech.com" },
 ];
