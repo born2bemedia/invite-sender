@@ -64,4 +64,5 @@ export const senderOptions = [
   { value: "socials@signalor.pro", label: "socials@signalor.pro" },
   { value: "socials@green-leaf.dev", label: "socials@green-leaf.dev" },
   { value: "socials@craftify-tech.com", label: "socials@craftify-tech.com" },
+  { value: "socials@nexoria.ai", label: "socials@nexoria.ai" },
 ];
