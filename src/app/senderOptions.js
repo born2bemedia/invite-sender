@@ -67,4 +67,5 @@ export const senderOptions = [
   { value: "socials@nexoria.ai", label: "socials@nexoria.ai" },
   { value: "socials@moddle3d.com", label: "socials@moddle3d.com" },
   { value: "socials@idelaria.com", label: "socials@idelaria.com" },
+  { value: "socials@estanora.com", label: "socials@estanora.com" },
 ];
