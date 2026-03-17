@@ -69,4 +69,5 @@ export const senderOptions = [
   { value: "socials@idelaria.com", label: "socials@idelaria.com" },
   { value: "socials@estanora.com", label: "socials@estanora.com" },
   { value: "socials@axelvior.com", label: "socials@axelvior.com" },
+  { value: "info@axeron.uk", label: "info@axeron.uk" },
 ];
